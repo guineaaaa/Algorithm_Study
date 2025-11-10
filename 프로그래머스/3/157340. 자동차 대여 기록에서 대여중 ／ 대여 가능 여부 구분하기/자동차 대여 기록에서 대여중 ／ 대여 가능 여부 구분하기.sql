@@ -1,0 +1,17 @@
+SELECT CAR_ID,
+CASE 
+WHEN SUM(
+    -- 서브 쿼리가 아닌 행 단위
+    -- 이미 SELECT로 읽어온 테이블들의 행을 SUM하고 그 결과값을 조건 분기해서 포함할뿐 (CASE+SUM은 계산하는 수식)
+    CASE
+    WHEN TO_DATE('2022-10-16','YYYY-MM-DD')
+    BETWEEN START_DATE AND END_DATE
+    THEN 1
+    ELSE 0
+    END
+)>0 THEN '대여중'
+ELSE '대여 가능'
+END AS AVAILABILITY
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+GROUP BY CAR_ID
+ORDER BY CAR_ID DESC;
